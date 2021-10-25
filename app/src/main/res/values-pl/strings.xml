@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="off_test_1">Urlop zaległy: 2 dni</string>
+    <string name="off_test_2">Z limitu na żądanie: 3 dni</string>
+    <string name="good_morning">\"Dzień dobry, \"</string>
+    <string name="paychecks">Wypłaty</string>
+    <string name="day_offs">Urlopy</string>
+    <string name="off_coming">Zbliżający się urlop</string>
+    <string name="history_of_offs">Historia urlopów</string>
+    <string name="off_applications_list">Wnioski urlopowe</string>
+</resources>
