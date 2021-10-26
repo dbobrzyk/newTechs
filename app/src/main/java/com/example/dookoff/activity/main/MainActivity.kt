@@ -2,13 +2,23 @@ package com.example.dookoff.activity.main
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View.inflate
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Text
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Observer
-import com.example.dookoff.networking.RetrofitClient
-import com.example.dookoff.ui.HomeView
+import com.example.dookoff.activity.main.fragment.OffFragment
 import com.example.dookoff.ui.theme.DoOkOffTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -27,7 +37,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DoOkOffTheme {
-                HomeView()
+                Column(
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    Text("nullko")
+                    AndroidView(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth(),
+                        factory = { context ->
+                            FrameLayout(context).apply {
+                                OffFragment.inflate(LayoutInflater.from(context), this, true).root
+                            }
+                        })
+                    Text("koniec")
+                }
             }
         }
         getData()
