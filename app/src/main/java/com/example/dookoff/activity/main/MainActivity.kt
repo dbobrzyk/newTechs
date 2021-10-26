@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Observer
 import com.example.dookoff.activity.main.fragment.OffFragment
+import com.example.dookoff.ui.HomeView
 import com.example.dookoff.ui.theme.DoOkOffTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -40,17 +41,7 @@ class MainActivity : ComponentActivity() {
                 Column(
                     modifier = Modifier.padding(8.dp)
                 ) {
-                    Text("nullko")
-                    AndroidView(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(),
-                        factory = { context ->
-                            FrameLayout(context).apply {
-                                OffFragment.inflate(LayoutInflater.from(context), this, true).root
-                            }
-                        })
-                    Text("koniec")
+                    HomeView()
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.example.dookoff.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,97 +35,92 @@ import com.example.dookoff.ui.theme.MainColor3
 import com.example.dookoff.utils.toDateInString
 import java.util.*
 
-
 @Preview
 @Composable
 fun ComposablePreview() {
     HomeView()
 }
 
-val testDayOffList = listOf(
-    DayOff(
-        dateStart = Date(),
-        dateEnd = Date(),
-        isHistorical = false,
-        isInProgress = true,
-        timeInDays = 7
-    ),
-    DayOff(
-        dateStart = Date(),
-        dateEnd = Date(),
-        isHistorical = false,
-        isInProgress = false,
-        timeInDays = 1
-    ),
-    DayOff(
-        dateStart = Date(),
-        dateEnd = Date(),
-        isHistorical = false,
-        isInProgress = false,
-        timeInDays = 14
-    )
-)
-
-val historicalTestDayOffList = listOf(
-    DayOff(
-        dateStart = Date(),
-        dateEnd = Date(),
-        isHistorical = true,
-        isInProgress = true,
-        timeInDays = 7
-    ),
-    DayOff(
-        dateStart = Date(),
-        dateEnd = Date(),
-        isHistorical = true,
-        isInProgress = false,
-        timeInDays = 1
-    ),
-)
-
-val testApplicationList = listOf(
-    DayOffApplication("Urlop wypoczynkowy", null),
-    DayOffApplication("Urlop wypoczynkowy na żądanie", null),
-    DayOffApplication("Dzień wolny za święto", null),
-    DayOffApplication("Urlop na dziecko", "Na cały dzień"),
-    DayOffApplication("Urlop na dziecko", "Na część dnia"),
-    DayOffApplication("Urlop okolicznościowy", null),
-    DayOffApplication("Urlop bezpłatny", null)
-
-)
+const val DAYS_OFF = 0
+const val PAYCHECKS = 1
 
 @Composable
 fun HomeView() {
+    var pageSelected by remember {
+        mutableStateOf(0)
+    }
     Scaffold(
-        bottomBar = { BottomBar() },
+        bottomBar = { BottomBar(pageSelected) { page -> pageSelected = page } },
         modifier = Modifier
             .background(color = BackgroundColor)
-            .fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
-                .verticalScroll(rememberScrollState())
-
-        ) {
-            GreetingsView()
-            Header(headerText = stringResource(R.string.off_coming))
-            DaysOffToComeSection(daysOffList = testDayOffList)
-            Header(headerText = stringResource(R.string.history_of_offs))
-            DaysOffToComeSection(daysOffList = historicalTestDayOffList)
-            Header(headerText = stringResource(R.string.off_applications_list))
-            DayOffApplicationsList(list = testApplicationList)
+            .fillMaxSize(),
+        content = { innerPadding ->
+            Box(
+                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, innerPadding.calculateBottomPadding())
+            ) {
+                if (pageSelected == DAYS_OFF)
+                    OffDaysMajorView()
+                else
+                    PaycheckMajorView()
+            }
 
         }
+    )
+}
+
+@Composable
+fun PaycheckMajorView() {
+    val months = listOf<String>(
+        "Styczen",
+        "Luty",
+        "Marzec",
+        "Kwiecien",
+        "Maj",
+        "Czerwiec",
+        "lipiec",
+        "Sierpień",
+        "Wrzesień",
+        "Listopad",
+        "Grudzień"
+    )
+    LazyColumn {
+        items(months.size) {
+            Column(
+                modifier = Modifier
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MainColor3)
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            ) {
+                Text("Wypłata za miesiąc: ${months[it]}", color = Color.White)
+            }
+        }
+    }
+}
+
+@Composable
+fun OffDaysMajorView() {
+    Column(
+        modifier = Modifier
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
+            .verticalScroll(rememberScrollState())
+
+    ) {
+        GreetingsView()
+        Header(headerText = stringResource(R.string.off_coming))
+        DaysOffToComeSection(daysOffList = testDayOffList)
+        Header(headerText = stringResource(R.string.history_of_offs))
+        DaysOffToComeSection(daysOffList = historicalTestDayOffList)
+        Header(headerText = stringResource(R.string.off_applications_list))
+        DayOffApplicationsList(list = testApplicationList)
 
     }
 }
 
 @Composable
-fun BottomBar() {
-    var pageSelected by remember {
-        mutableStateOf(0)
-    }
+fun BottomBar(pageSelected: Int, selectPage: (Int) -> Unit) {
+
     Row(
         modifier = Modifier
             .background(MainColor3)
@@ -136,8 +132,7 @@ fun BottomBar() {
             modifier = Modifier
                 .weight(1f)
                 .clickable {
-                    pageSelected = 0
-
+                    selectPage.invoke(0)
                 },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -152,8 +147,7 @@ fun BottomBar() {
             modifier = Modifier
                 .weight(1f)
                 .clickable {
-                    pageSelected = 1
-
+                    selectPage.invoke(1)
                 },
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -355,6 +349,7 @@ fun DaysOffToComeSection(daysOffList: List<DayOff>) {
     }
 }
 
+
 @Composable
 fun DayOffApplicationsList(list: List<DayOffApplication>) {
     Column {
@@ -386,3 +381,57 @@ fun DayOffApplicationsList(list: List<DayOffApplication>) {
         }
     }
 }
+
+//Test lists just to mock the data
+val testDayOffList = listOf(
+    DayOff(
+        dateStart = Date(),
+        dateEnd = Date(),
+        isHistorical = false,
+        isInProgress = true,
+        timeInDays = 7
+    ),
+    DayOff(
+        dateStart = Date(),
+        dateEnd = Date(),
+        isHistorical = false,
+        isInProgress = false,
+        timeInDays = 1
+    ),
+    DayOff(
+        dateStart = Date(),
+        dateEnd = Date(),
+        isHistorical = false,
+        isInProgress = false,
+        timeInDays = 14
+    )
+)
+
+val historicalTestDayOffList = listOf(
+    DayOff(
+        dateStart = Date(),
+        dateEnd = Date(),
+        isHistorical = true,
+        isInProgress = true,
+        timeInDays = 7
+    ),
+    DayOff(
+        dateStart = Date(),
+        dateEnd = Date(),
+        isHistorical = true,
+        isInProgress = false,
+        timeInDays = 1
+    ),
+)
+
+val testApplicationList = listOf(
+    DayOffApplication("Urlop wypoczynkowy", null),
+    DayOffApplication("Urlop wypoczynkowy na żądanie", null),
+    DayOffApplication("Dzień wolny za święto", null),
+    DayOffApplication("Urlop na dziecko", "Na cały dzień"),
+    DayOffApplication("Urlop na dziecko", "Na część dnia"),
+    DayOffApplication("Urlop okolicznościowy", null),
+    DayOffApplication("Urlop bezpłatny", null)
+
+)
+
