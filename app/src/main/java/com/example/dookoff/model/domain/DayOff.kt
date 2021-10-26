@@ -1,4 +1,4 @@
-package com.example.dookoff.model
+package com.example.dookoff.model.domain
 
 import java.util.*
 

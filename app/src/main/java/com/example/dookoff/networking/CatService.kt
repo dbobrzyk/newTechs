@@ -6,13 +6,13 @@ import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface TestApi {
+interface CatService {
 
     @GET("breeds")
     fun getBreeds(@Query("limit") limit: String): Deferred<CatBreedsList>
 
     @GET("fact")
-    fun getBreeds(): Deferred<CatBreedsList>
+    fun getFact(): Deferred<String>
 
     companion object{
         const val URL = "https://catfact.ninja/"
