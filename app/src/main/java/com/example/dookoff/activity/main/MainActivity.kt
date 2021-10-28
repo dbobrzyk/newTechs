@@ -1,14 +1,12 @@
 package com.example.dookoff.activity.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.dookoff.ui.HomeView
 import com.example.dookoff.ui.theme.DoOkOffTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +18,12 @@ class MainActivity : ComponentActivity() {
 
     private val TAG = "MainActivity"
 
+    @Preview
+    @Composable
+    fun ComposablePreview() {
+        HomeView(vm.stateOfCats)
+    }
+
     @Inject
     lateinit var randomString: String
 
@@ -29,15 +33,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DoOkOffTheme {
-                Column(
-                    modifier = Modifier.padding(8.dp)
-                ) {
+                Column {
                     HomeView(vm.stateOfCats)
                 }
             }
         }
         getData()
-        Log.d(TAG, "$randomString")
     }
 
     private fun getData() {
@@ -45,5 +46,6 @@ class MainActivity : ComponentActivity() {
     }
 
 }
+
 
 
