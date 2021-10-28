@@ -81,26 +81,63 @@ fun PaycheckMajorView(stateOfCats: MutableState<List<CatBreedDomain>>) {
 //        "Listopad",
 //        "Grudzień"
 //    )
-    val catsList = stateOfCats.value
-    LazyColumn(
-        modifier = Modifier.padding(bottom = 8.dp)
-    ) {
-        items(catsList.size) {
-            Column(
-                modifier = Modifier
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(MainColor3)
-                    .padding(16.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(catsList[it].breed, color = Color.White, style = MaterialTheme.typography.h6)
-                CatInfoTextView("Pochodzenie", catsList[it].origin)
-                CatInfoTextView("Państwo", catsList[it].country)
-                CatInfoTextView("Sierść", catsList[it].coat)
-                CatInfoTextView("Wzór", catsList[it].pattern)
+
+    Column {
+        var countryChosen by remember {
+            mutableStateOf("")
+        }
+        val catsCountries = stateOfCats.value.map { it.country }.distinct().toList()
+        LazyRow(
+            modifier = Modifier.padding(bottom = 8.dp)
+        ) {
+            items(catsCountries.size) {
+                CatCountryButton(catsCountries[it], countryChosen == catsCountries[it], {country -> if(countryChosen == country) countryChosen = "" else countryChosen = country })
             }
         }
+
+        var catsList = stateOfCats.value
+        if(countryChosen.isNotEmpty())
+            catsList = catsList.filter { it.country == countryChosen }
+        LazyColumn(
+            modifier = Modifier.padding(bottom = 8.dp)
+        ) {
+            items(catsList.size) {
+                Column(
+                    modifier = Modifier
+                        .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(MainColor3)
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        catsList[it].breed,
+                        color = Color.White,
+                        style = MaterialTheme.typography.h6
+                    )
+                    CatInfoTextView("Pochodzenie", catsList[it].origin)
+                    CatInfoTextView("Państwo", catsList[it].country)
+                    CatInfoTextView("Sierść", catsList[it].coat)
+                    CatInfoTextView("Wzór", catsList[it].pattern)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CatCountryButton(country: String, enabled: Boolean, countryChosen: (String) -> Unit) {
+    Box(
+        modifier = Modifier
+            .padding(top = 16.dp, start = 8.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(color = if (enabled) MainColor2 else MainColor3)
+            .padding(top = 8.dp, bottom = 8.dp, start = 24.dp, end = 24.dp)
+            .clickable {
+                countryChosen.invoke(country)
+            }
+    ) {
+        Text(country, color = Color.White)
     }
 }
 
