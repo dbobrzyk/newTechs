@@ -22,11 +22,13 @@ import com.example.dookoff.ui.theme.MainColor3
 
 const val DAYS_OFF = 0
 const val CATS = 1
+const val RESERVE_TABLE = 2
+
 
 @Composable
 fun HomeView(stateOfCats: MutableState<List<CatBreedDomain>>) {
     var pageSelected by remember {
-        mutableStateOf(0)
+        mutableStateOf(2)
     }
     Scaffold(
         bottomBar = { BottomBar(pageSelected) { page -> pageSelected = page } },
@@ -39,8 +41,10 @@ fun HomeView(stateOfCats: MutableState<List<CatBreedDomain>>) {
             ) {
                 if (pageSelected == DAYS_OFF)
                     OffDaysMajorView()
-                else if(pageSelected == CATS)
+                else if (pageSelected == CATS)
                     CatsMajorView(stateOfCats)
+                else if (pageSelected == RESERVE_TABLE)
+                    ReservationMajorView()
             }
 
         }
@@ -84,6 +88,21 @@ fun BottomBar(pageSelected: Int, selectPage: (Int) -> Unit) {
                 1,
                 com.example.dookoff.R.drawable.ic_money,
                 stringResource(R.string.paychecks),
+                pageSelected
+            )
+        }
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .clickable {
+                    selectPage.invoke(2)
+                },
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            BottomButton(
+                2,
+                com.example.dookoff.R.drawable.ic_summer,
+                stringResource(R.string.reserve_table),
                 pageSelected
             )
         }

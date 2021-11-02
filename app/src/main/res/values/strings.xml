@@ -9,4 +9,5 @@
     <string name="off_coming">Zbliżający się urlop</string>
     <string name="history_of_offs">Historia urlopów</string>
     <string name="off_applications_list">Wnioski urlopowe</string>
+    <string name="reserve_table">Reservation</string>
 </resources>

@@ -5,6 +5,7 @@ import com.example.dookoff.model.domain.DayOffApplication
 import java.util.*
 
 //Test lists just to mock the data
+val day = 86400000
 val testDayOffList = listOf(
     DayOff(
         dateStart = Date(),
@@ -31,15 +32,15 @@ val testDayOffList = listOf(
 
 val historicalTestDayOffList = listOf(
     DayOff(
-        dateStart = Date(Date().time-65276483),
-        dateEnd = Date(Date().time+4756837),
+        dateStart = Date(Date().time-(14*day)),
+        dateEnd = Date(Date().time-(7*day)),
         isHistorical = true,
         isInProgress = true,
         timeInDays = 7
     ),
     DayOff(
-        dateStart = Date(),
-        dateEnd = Date(),
+        dateStart = Date(Date().time-(21*day)),
+        dateEnd = Date(Date().time-(20*day)),
         isHistorical = true,
         isInProgress = false,
         timeInDays = 1
@@ -68,5 +69,4 @@ val testApplicationList = listOf(
     DayOffApplication("Urlop na dziecko", "Na część dnia"),
     DayOffApplication("Urlop okolicznościowy", null),
     DayOffApplication("Urlop bezpłatny", null)
-
 )
