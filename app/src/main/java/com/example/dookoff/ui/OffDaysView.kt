@@ -1,6 +1,7 @@
 package com.example.dookoff.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
@@ -9,7 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.example.dookoff.R
 import com.example.dookoff.model.domain.DayOff
 import com.example.dookoff.model.domain.DayOffApplication
+import com.example.dookoff.ui.theme.CommonDialog
 import com.example.dookoff.ui.theme.MainColor2
 import com.example.dookoff.ui.theme.MainColor3
 import com.example.dookoff.utils.toDateInString
@@ -116,6 +118,10 @@ fun Header(headerText: String) {
 
 @Composable
 fun DaysOffToComeSection(daysOffList: List<DayOff>) {
+    var showingDialog = remember {
+        mutableStateOf(false)
+    }
+
     LazyRow {
         items(daysOffList.size) {
             Box(
@@ -187,13 +193,32 @@ fun DaysOffToComeSection(daysOffList: List<DayOff>) {
                                 .align(Alignment.CenterVertically)
                                 .padding(top = 8.dp, bottom = 8.dp, start = 24.dp, end = 24.dp)
                         ) {
-                            Text("Szczegóły", color = Color.White)
+                            Text(
+                                modifier = Modifier.clickable {
+                                    showingDialog.value = true
+                                },
+                                text = "Szczegóły", color = Color.White,
+                            )
+                            if (showingDialog.value)
+                                showDialog(state = showingDialog)
                         }
                     }
                 }
             }
         }
     }
+}
+
+@Composable
+fun showDialog(state: MutableState<Boolean>) {
+    CommonDialog(
+        title = "Cześć!",
+        text = "Witamy w dialogu Jetpack Compose",
+        state = state,
+        onDismiss = {
+            state.value = false
+        }
+    )
 }
 
 
