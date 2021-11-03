@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
     @Preview
     @Composable
     fun ComposablePreview() {
-        HomeView(vm.stateOfCats)
+        HomeView(vm.stateOfCats, this)
     }
 
     @Inject
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DoOkOffTheme {
                 Column {
-                    HomeView(vm.stateOfCats)
+                    HomeView(vm.stateOfCats, this@MainActivity)
                 }
             }
         }

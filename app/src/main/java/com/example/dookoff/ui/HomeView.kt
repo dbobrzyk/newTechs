@@ -1,5 +1,6 @@
 package com.example.dookoff.ui
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -26,7 +27,7 @@ const val RESERVE_TABLE = 2
 
 
 @Composable
-fun HomeView(stateOfCats: MutableState<List<CatBreedDomain>>) {
+fun HomeView(stateOfCats: MutableState<List<CatBreedDomain>>, context: Context) {
     var pageSelected by remember {
         mutableStateOf(2)
     }
@@ -44,7 +45,7 @@ fun HomeView(stateOfCats: MutableState<List<CatBreedDomain>>) {
                 else if (pageSelected == CATS)
                     CatsMajorView(stateOfCats)
                 else if (pageSelected == RESERVE_TABLE)
-                    ReservationMajorView()
+                    ReservationMajorView(context)
             }
 
         }

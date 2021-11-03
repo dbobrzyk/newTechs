@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun CommonDialog(
@@ -20,21 +21,23 @@ fun CommonDialog(
 ) {
     AlertDialog(
         onDismissRequest = { onDismiss.invoke() },
+
         title = {
                 Column(Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.SpaceBetween) {
+                verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(title)
                     Divider()
                     Text(text)
                 }
         },
         dismissButton = {
+
                Button(onClick = {state.value = false}){
                    Text("Cancel")
                }
         },
         confirmButton = {
-            Button(onClick = {state.value = false}){
+            Button( onClick = {state.value = false}){
                 Text("Confirm")
             }
         }

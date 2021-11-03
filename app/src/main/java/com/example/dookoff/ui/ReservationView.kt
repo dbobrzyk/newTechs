@@ -1,10 +1,14 @@
 package com.example.dookoff.ui
 
+import android.app.DatePickerDialog
+import android.content.Context
+import android.widget.DatePicker
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -23,9 +27,12 @@ import com.example.dookoff.R
 import com.example.dookoff.model.domain.CatBreedDomain
 import com.example.dookoff.ui.theme.MainColor2
 import com.example.dookoff.ui.theme.MainColor3
+import java.util.*
 
 @Composable
-fun ReservationMajorView() {
+fun ReservationMajorView(context: Context) {
+
+    var shouldShowDatePicker = remember { mutableStateOf(false)}
 
     val scrollState = rememberScrollState()
     Column(
@@ -95,6 +102,9 @@ fun ReservationMajorView() {
                     .wrapContentHeight()
                     .weight(1f)
                     .align(Alignment.CenterVertically)
+                    .clickable {
+                        shouldShowDatePicker.value = true
+                    }
             ) {
                 Icon(
                     painter = painterResource(
@@ -168,5 +178,34 @@ fun ReservationMajorView() {
 
         TextMockedRows()
 
+        if(shouldShowDatePicker.value){
+            showDatePicker(context)
+        }
+
     }
+}
+
+@Composable
+fun showDatePicker(context: Context){
+
+    val year: Int
+    val month: Int
+    val day: Int
+
+    val calendar = Calendar.getInstance()
+    year = calendar.get(Calendar.YEAR)
+    month = calendar.get(Calendar.MONTH)
+    day = calendar.get(Calendar.DAY_OF_MONTH)
+    calendar.time = Date()
+
+    val date = remember { mutableStateOf("") }
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+            date.value = "$dayOfMonth/$month/$year"
+        }, year, month, day
+    )
+
+    datePickerDialog.show()
+
 }
