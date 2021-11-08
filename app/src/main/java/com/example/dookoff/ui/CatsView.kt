@@ -30,7 +30,9 @@ fun CatsMajorView(stateOfCats: MutableState<List<CatBreedDomain>>) {
             modifier = Modifier.padding(bottom = 8.dp)
         ) {
             items(catsCountries.size) {
-                CatCountryButton(catsCountries[it], countryChosen == catsCountries[it], {country -> if(countryChosen == country) countryChosen = "" else countryChosen = country })
+                CatCountryButton(catsCountries[it], countryChosen == catsCountries[it]) { country ->
+                    if (countryChosen == country) countryChosen = "" else countryChosen = country
+                }
             }
         }
 
