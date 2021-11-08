@@ -11,7 +11,7 @@ class FakeCatRepository: CatRepository {
         return catList
     }
 
-    suspend fun addCat(cat: CatBreedDomain){
+    fun addCat(cat: CatBreedDomain){
         catList.add(cat)
     }
 

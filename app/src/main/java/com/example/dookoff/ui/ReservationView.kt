@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,13 +33,14 @@ import java.util.*
 @Composable
 fun ReservationMajorView(context: Context) {
 
-    var shouldShowDatePicker = remember { mutableStateOf(false)}
+    var shouldShowDatePicker = remember { mutableStateOf(false) }
 
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(scrollState)
+            .testTag("reservationView")
     ) {
 
         Row(
@@ -178,7 +180,7 @@ fun ReservationMajorView(context: Context) {
 
         TextMockedRows()
 
-        if(shouldShowDatePicker.value){
+        if (shouldShowDatePicker.value) {
             showDatePicker(context)
         }
 
@@ -186,7 +188,7 @@ fun ReservationMajorView(context: Context) {
 }
 
 @Composable
-fun showDatePicker(context: Context){
+fun showDatePicker(context: Context) {
 
     val year: Int
     val month: Int

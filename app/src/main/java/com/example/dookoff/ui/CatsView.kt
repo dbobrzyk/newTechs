@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.dookoff.model.domain.CatBreedDomain
@@ -21,13 +22,16 @@ import com.example.dookoff.ui.theme.MainColor3
 @Composable
 fun CatsMajorView(stateOfCats: MutableState<List<CatBreedDomain>>) {
 
-    Column {
+    Column(
+        modifier = Modifier.testTag("catsView")
+    ) {
         var countryChosen by remember {
             mutableStateOf("")
         }
         val catsCountries = stateOfCats.value.map { it.country }.distinct().toList()
         LazyRow(
             modifier = Modifier.padding(bottom = 8.dp)
+
         ) {
             items(catsCountries.size) {
                 CatCountryButton(catsCountries[it], countryChosen == catsCountries[it]) { country ->
@@ -37,7 +41,7 @@ fun CatsMajorView(stateOfCats: MutableState<List<CatBreedDomain>>) {
         }
 
         var catsList = stateOfCats.value
-        if(countryChosen.isNotEmpty())
+        if (countryChosen.isNotEmpty())
             catsList = catsList.filter { it.country == countryChosen }
         LazyColumn(
             modifier = Modifier.padding(bottom = 8.dp)
