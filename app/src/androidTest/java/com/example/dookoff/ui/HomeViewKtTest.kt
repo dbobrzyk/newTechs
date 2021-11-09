@@ -2,10 +2,8 @@ package com.example.dookoff.ui
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.dookoff.activity.main.MainActivity
@@ -95,9 +93,18 @@ class HomeViewKtTest {
         check_bottom_nav_to_off_days()
         check_bottom_nav_to_reservations()
         check_bottom_nav_to_reservations()
-        check_bottom_nav_to_off_days()
+
         check_bottom_nav_to_cats()
         check_bottom_nav_to_reservations()
         check_bottom_nav_to_cats()
+    }
+
+    @Test
+    fun check_details_button_displaying_dialog(){
+        check_bottom_nav_to_off_days()
+        composeRule.onAllNodesWithText("Szczegóły")[0].performClick()
+        composeRule.onAllNodesWithText("Witamy w dialogu Jetpack Compose")[0].assertIsDisplayed()
+        composeRule.onAllNodesWithText("Confirm")[0].performClick()
+        composeRule.onNodeWithText("Witamy w dialogu Jetpack Compose").assertDoesNotExist()
     }
 }
